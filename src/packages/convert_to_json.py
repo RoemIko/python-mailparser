@@ -5,8 +5,15 @@ import re
 from bs4 import BeautifulSoup
 import json
 from src import path_to_output
+from typing import *
 
-def parse_email_to_json(directory, ENABLE_ATTACHMENT, output):
+def parse_email_to_json(directory:str, ENABLE_ATTACHMENT:bool, output:str) -> None:
+    """_summary_ Parse emails to JSON format.
+
+    :param directory: location of the emails
+    :param ENABLE_ATTACHMENT: bool to enable attachment extractions
+    :param output: name of the output file
+    """   
     
     mail_blob = {}
     mail_blob['256Hash of mail'] = {}
@@ -64,8 +71,12 @@ def parse_email_to_json(directory, ENABLE_ATTACHMENT, output):
      
     save_to_json(mail_blob, output=output)
 
-def save_to_json(mail_blob, output):
-
+def save_to_json(mail_blob:dict, output:str) -> None:
+    """_summary_ Save json blob to json file.
+    
+    :param mail_blob: json blob
+    :param output: name of the output file
+    """
     if output == 'default':
         output = f'parsed_emails'
         if os.path.exists(f'{path_to_output}/{output}.json'):
@@ -80,7 +91,12 @@ def save_to_json(mail_blob, output):
         json.dump(mail_blob, outfile, indent=4,ensure_ascii=False)
 
 
-def clean_html(string):
+def clean_html(string:str) -> str:
+    """_summary_ Remove html tags from string.
+    
+    :param string: string with html tags
+    :return: string without html tags
+    """
     logging.debug("Cleaning html tags from body.")
     return " ".join(BeautifulSoup(string, 'html.parser').text
                     .replace('\n','')
