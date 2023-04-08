@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 import json
 from src import path_to_output
 
-def parse_email_to_json(directory, ENABLE_ATTACHMENT):
+def parse_email_to_json(directory, ENABLE_ATTACHMENT, output):
     
     mail_blob = {}
     mail_blob['256Hash of mail'] = {}
@@ -62,11 +62,20 @@ def parse_email_to_json(directory, ENABLE_ATTACHMENT):
             mail_blob['256Hash of mail'][hash256email]['Body']['Links'] = urls
 
      
-    save_to_json(mail_blob)
+    save_to_json(mail_blob, output=output)
 
-def save_to_json(mail_blob):
-    
-    with open(f'{path_to_output}/json_data.json', 'w', encoding='utf-8') as outfile:
+def save_to_json(mail_blob, output):
+
+    if output == 'default':
+        output = f'parsed_emails'
+        if os.path.exists(f'{path_to_output}/{output}.json'):
+            count = len(os.listdir(path_to_output))
+            print(count)
+            output = f'{output}_{count}'
+    else:
+        output = f'{output}'
+        
+    with open(f'{path_to_output}/{output}.json', 'w', encoding='utf-8') as outfile:
         logging.debug("Saving json blob to json file.")
         json.dump(mail_blob, outfile, indent=4,ensure_ascii=False)
 
