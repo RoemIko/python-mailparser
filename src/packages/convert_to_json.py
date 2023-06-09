@@ -4,7 +4,7 @@ import os
 import re
 from bs4 import BeautifulSoup
 import json
-from src import path_to_output
+from src import path_to_output, path_to_attachments
 from typing import *
 
 def parse_email_to_json(directory:str, ENABLE_ATTACHMENT:bool, output:str) -> None:
@@ -32,19 +32,31 @@ def parse_email_to_json(directory:str, ENABLE_ATTACHMENT:bool, output:str) -> No
         mail_blob['256Hash of mail'][hash256email]['Headers'] = mail.headers
         del mail_blob['256Hash of mail'][hash256email]['Headers']['Received']  
         mail_blob['256Hash of mail'][hash256email]['Headers']['Received'] = mail.received
-        ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', mail.received_raw[0])
-        mail_blob['256Hash of mail'][hash256email]['Headers']['SenderIP'] = ip
+        # Save the sender IP in the json blob
+        ips = []
+        for x in mail.received:
+            if 'from' in x:
+                ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', x['from'])
+                if ip != []:
+                    ip = ''.join(ip)
+                    ips.append(ip)
+            if 'by' in x:
+                ip = re.findall(r'[0-9]+(?:\.[0-9]+){3}', x['by'])
+                if ip != []:
+                    ip = ''.join(ip)
+                    ips.append(ip)
+        ips = list(dict.fromkeys(ips))
+        
+        mail_blob['256Hash of mail'][hash256email]['Headers']['SenderIP'] = ips
         mail_blob['256Hash of mail'][hash256email]['Attachments'] = mail.attachments
     
         #Build attachments in folder Attachments
         if ENABLE_ATTACHMENT is True:
             logging.debug("Extracting attachments.")
-            if not os.path.exists("attachments"):
-                os.makedirs("attachments")
             for attachment in mail_blob['256Hash of mail'][hash256email]['Attachments']:
                 if "/" in attachment["filename"]:
                     attachment["filename"] = attachment["filename"].replace("/","?")
-                mail.write_attachments("attachments/")
+                mail.write_attachments(path_to_attachments)
 
         # Create json key for body, then set the content of the body under content key
         body = mail.body
