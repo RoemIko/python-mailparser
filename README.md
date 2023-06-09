@@ -1,15 +1,15 @@
 # Python-Mailparser
 
-Parse E-mails into a JSON blob that can easily be analyzed.
+Parse email(s) into a JSON blob that can easily be analyzed.
 
 All the information in a header, body and attachment are put into a JSON blob, making it easier for Incident Responders
-to analyze the content of an E-mail.
+to analyze the contents of an email(s).
 
 ## Extraction Features
 These features could be helpfull to do a quick analysis on the E-mail.
 - Extract URLS from body.
-- Extract Sender-IP out of headers.
-- Extract Attachments out of E-Mail.
+- Extract Sender-IP(s) out of headers.
+- Extract Attachments out of email(s)
 
 ## Installation
 
