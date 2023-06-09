@@ -17,7 +17,7 @@ def parse_email_to_json(directory:str, ENABLE_ATTACHMENT:bool, output:str) -> No
     
     mail_blob = {}
     mail_blob['256Hash of mail'] = {}
-
+    logging.info("Starting to parse emails to json.")
     for email in os.listdir(directory):
         # Replace the name of the file with the hash of the file and iterate.
         logging.debug(f"Scanning {email}...")
@@ -93,13 +93,12 @@ def save_to_json(mail_blob:dict, output:str) -> None:
         output = f'parsed_emails'
         if os.path.exists(f'{path_to_output}/{output}.json'):
             count = len(os.listdir(path_to_output))
-            print(count)
             output = f'{output}_{count}'
     else:
         output = f'{output}'
         
     with open(f'{path_to_output}/{output}.json', 'w', encoding='utf-8') as outfile:
-        logging.debug("Saving json blob to json file.")
+        logging.info("Saving json blob to json file.")
         json.dump(mail_blob, outfile, indent=4,ensure_ascii=False)
 
 

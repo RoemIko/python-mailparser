@@ -1,6 +1,6 @@
 from typing import *
 import argparse
-import src.helpers.logger as logger
+from src.helpers import logger
 from src.packages.convert_to_json import parse_email_to_json
 
 def main(directory:str, ENABLE_ATTACHMENT:bool, output:str) -> None:
