@@ -13,4 +13,4 @@ if not path.exists(path_to_output):
     makedirs(path_to_output)
 if not path.exists(path_to_attachments):
     makedirs(path_to_attachments)
-    
+
