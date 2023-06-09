@@ -17,7 +17,7 @@ if __name__ == "__main__":
                     prog = 'Python Email Parser',
                     description = 'Parse emails to JSON format.',
                     epilog = 'Example: python3 main.py -d /home/user/emails/ -a')
-    parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0')
+    parser.add_argument('-v', '--version', action='version', version='%(prog)s 1.0.1')
     parser.add_argument('-d', '--dir', help='Path to directory with emails.')
     parser.add_argument('-a', '--attachments', help='Extract attachments out of emails. Saves into attachment directory.', action='store_true')
     parser.add_argument('-o', '--output', help='Name of the output JSON file.')
